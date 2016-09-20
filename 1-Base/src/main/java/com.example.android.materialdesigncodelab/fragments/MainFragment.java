@@ -83,6 +83,11 @@ public class MainFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    public void onDetach() {
+        screenHandler.reset();
+        super.onDetach();
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

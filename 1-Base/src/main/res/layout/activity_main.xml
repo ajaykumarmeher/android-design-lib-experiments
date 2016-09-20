@@ -48,6 +48,19 @@
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.AppBarLayout>
 
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="@dimen/md_keylines"
+            android:layout_marginEnd="@dimen/md_keylines"
+            android:layout_marginRight="@dimen/md_keylines"
+            android:src="@drawable/ic_add_white_24dp"
+            />
+
+
         <FrameLayout
             android:id="@+id/main_view_cnt"
             android:layout_width="match_parent"

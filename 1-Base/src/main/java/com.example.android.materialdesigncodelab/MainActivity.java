@@ -18,6 +18,7 @@ package com.example.android.materialdesigncodelab;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -33,12 +34,13 @@ import android.widget.FrameLayout;
 import com.example.android.materialdesigncodelab.fragments.MainFragment;
 import com.example.android.materialdesigncodelab.ui.MainScreenHandler;
 
-public class MainActivity extends AppCompatActivity implements MainScreenHandler{
+public class MainActivity extends AppCompatActivity implements MainScreenHandler {
     private DrawerLayout mDrawerLayout;
     private FrameLayout mMainViewContainer;
     private Toolbar mToolbar;
     private TabLayout mTabs;
     private AppBarLayout mAppBarLayout;
+    private FloatingActionButton mFab;
 
 
     @Override
@@ -55,8 +57,9 @@ public class MainActivity extends AppCompatActivity implements MainScreenHandler
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mAppBarLayout = (AppBarLayout)findViewById(R.id.appbar);
-        mTabs = (TabLayout)findViewById(R.id.tabs);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        mTabs = (TabLayout) findViewById(R.id.tabs);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mMainViewContainer = (FrameLayout) findViewById(R.id.main_view_cnt);
 
@@ -127,11 +130,17 @@ public class MainActivity extends AppCompatActivity implements MainScreenHandler
     }
 
     @Override
+    public AppBarLayout getFloatingActionButton() {
+        return null;
+    }
+
+    @Override
     public void reset() {
         // Reset all the bindings.
         mTabs.removeAllTabs();
         mTabs.setupWithViewPager(null);
         mTabs.setVisibility(View.GONE);
+        mFab.setVisibility(View.GONE);
     }
 }
 
