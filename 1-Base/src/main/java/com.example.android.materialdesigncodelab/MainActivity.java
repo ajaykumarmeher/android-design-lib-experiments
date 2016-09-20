@@ -17,15 +17,10 @@
 package com.example.android.materialdesigncodelab;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,16 +28,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
-import com.example.android.materialdesigncodelab.fragments.CardContentFragment;
-import com.example.android.materialdesigncodelab.fragments.ListContentFragment;
-import com.example.android.materialdesigncodelab.fragments.TileContentFragment;
+import com.example.android.materialdesigncodelab.fragments.MainFragment;
+import com.example.android.materialdesigncodelab.ui.MainScreenHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainScreenHandler{
     private DrawerLayout mDrawerLayout;
+    private FrameLayout mMainViewContainer;
+    private Toolbar mToolbar;
+    private TabLayout mTabs;
+    private AppBarLayout mAppBarLayout;
 
 
     @Override
@@ -50,26 +46,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Adding Toolbar to Main screen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Setting ViewPager for each Tabs
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        // Set Tabs inside Toolbar
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        mAppBarLayout = (AppBarLayout)findViewById(R.id.appbar);
+        mTabs = (TabLayout)findViewById(R.id.tabs);
+
+        mMainViewContainer = (FrameLayout) findViewById(R.id.main_view_cnt);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
 
 // Set behavior of Navigation drawer
         navigationView.setNavigationItemSelectedListener(
@@ -86,25 +79,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        // Adding Floating Action Button to bottom right of main view
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Hello Snackbar!",
-                        Snackbar.LENGTH_LONG).show();
-            }
-        });
+        loadMainScreen();
     }
 
-    // Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new ListContentFragment(), "List");
-        adapter.addFragment(new TileContentFragment(), "Tile");
-        adapter.addFragment(new CardContentFragment(), "Card");
-        viewPager.setAdapter(adapter);
+    private void loadMainScreen() {
+        MainFragment mainFragment = MainFragment.newInstance(this);
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.main_view_cnt, mainFragment).commit();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,33 +111,27 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+    @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
 
-        public Adapter(FragmentManager manager) {
-            super(manager);
-        }
+    @Override
+    public TabLayout getTabLayout() {
+        return mTabs;
+    }
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
+    @Override
+    public AppBarLayout getAppBarLayout() {
+        return mAppBarLayout;
+    }
 
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    @Override
+    public void reset() {
+        // Reset all the bindings.
+        mTabs.removeAllTabs();
+        mTabs.setupWithViewPager(null);
+        mTabs.setVisibility(View.GONE);
     }
 }
 
