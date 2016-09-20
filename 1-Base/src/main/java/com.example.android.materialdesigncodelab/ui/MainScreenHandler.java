@@ -12,5 +12,6 @@ public interface MainScreenHandler {
     Toolbar getToolbar();
     TabLayout getTabLayout();
     AppBarLayout getAppBarLayout();
+    AppBarLayout getFloatingActionButton();
     void reset();
 }
