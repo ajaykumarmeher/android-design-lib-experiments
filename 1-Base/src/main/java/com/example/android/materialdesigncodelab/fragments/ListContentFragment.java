@@ -8,13 +8,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.android.materialdesigncodelab.Listeners.TickDetailListener;
 import com.example.android.materialdesigncodelab.R;
-import com.example.android.materialdesigncodelab.transitions.DetailsTransition;
 
 /**
  * Provides UI for the view with List.
@@ -112,19 +109,6 @@ public class ListContentFragment extends Fragment implements TickDetailListener 
   @Override public void onTickDetailClicked(int position, String tittle, String desc) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         TickDetailsDialogFragment dialog = TickDetailsDialogFragment.newInstance(position,tittle,desc);
-        //dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.MyCustomTheme);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          dialog.setSharedElementEnterTransition(new DetailsTransition());
-          dialog.setEnterTransition(new Fade());
-          dialog.setExitTransition(new Fade());
-          dialog.setSharedElementReturnTransition(new DetailsTransition());
-        }
         dialog.show(fm, "Dialog");
-    //getActivity().getSupportFragmentManager()
-    //    .beginTransaction()
-    //    .addSharedElement(holder.image, "kittenImage")
-    //    .replace(R.id.container, kittenDetails)
-    //    .addToBackStack(null)
-    //    .commit();
   }
 }
