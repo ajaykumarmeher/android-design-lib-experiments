@@ -14,10 +14,4 @@
  * limitations under the License.
  */
 
-include ':app'
 include ':1-Base'
-include ':2-Color'
-include ':3-Layout'
-include ':4-RecyclerView'
-include ':5-VectorAssets'
-include ':6-PageElement'
